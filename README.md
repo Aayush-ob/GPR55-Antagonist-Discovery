@@ -1,181 +1,131 @@
-# GPR55 Allosteric Antagonist Discovery
+# GPR55 Antagonist Discovery
 
-> **Computational Drug Discovery Pipeline for Novel GPR55 Antagonists**
+> **End-to-end structure-based discovery of novel GPR55 antagonists with anticancer potential** — high-throughput virtual screening → ADMET → all-atom molecular dynamics → MM-PBSA binding free energy → DFT.
 
-[![Phase](https://img.shields.io/badge/Phase-3%20Complete-green)](docs/PHASE_3_COMPLETE.md)
-[![HTVS](https://img.shields.io/badge/HTVS-Complete-success)]()
-[![Target](https://img.shields.io/badge/Target-GPR55-blue)](docs/GPR55_INTRODUCTION.md)
+[![Status](https://img.shields.io/badge/Project-Complete%20(thesis%20defended)-success)]()
+[![Manuscript](https://img.shields.io/badge/Manuscript-In%20Preparation-orange)]()
+[![Target](https://img.shields.io/badge/Target-GPR55%20(PDB%209IYA)-blue)](docs/GPR55_INTRODUCTION.md)
+[![MD](https://img.shields.io/badge/MD-100ns%20%C3%97%2012%20(~1.2%20%C2%B5s)-informational)]()
 [![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
 ---
 
-## 🎯 Project Overview
+## 🎯 Overview
 
-This project aims to discover novel antagonists for **GPR55** (G protein-coupled receptor 55), an atypical cannabinoid receptor implicated in cancer progression, inflammation, and metabolic disorders.
+This project discovers novel antagonists of **GPR55** (G-protein-coupled receptor 55), an atypical cannabinoid receptor overexpressed in aggressive cancers and signalling through the pro-oncogenic **Gα12/13** pathway. Using the 2025 cryo-EM structure (**PDB 9IYA**, 3.04 Å), a complete computational pipeline was run from a 10,940-compound library down to MD- and free-energy-validated lead candidates across **three distinct binding sites**.
 
-### Key Highlights
-- **35,000+ compounds** screened across **3 binding sites**
-- **Top hit: -12.3 kcal/mol** (2.84 kcal/mol better than AM251 control)
-- **9 novel candidates** selected for MD validation
-- **3 pan-site binders** discovered (bind all 3 sites)
+**This is the full project**, taken from virtual screening through dynamics and quantum-chemical validation. The work was completed and **defended as a final-year thesis**; a manuscript is in preparation.
+
+### Highlights
+- **10,940** drug-like compounds screened across **3 binding sites** (orthosteric, allosteric, protein–protein interface)
+- **100 ns molecular dynamics on 12 complexes (~1.2 µs aggregate)** in an explicit POPC membrane
+- **MM-PBSA binding free energies** that re-ranked the docking hits and validated the leads
+- **DFT (HOMO-LUMO / MEP)** electronic characterisation of the top compounds
+- A novel allosteric hit that **outperforms the reference antagonist AM251** at its site
 
 ---
 
-## 📊 Pipeline Workflow
+## 🔬 Pipeline
 
-```mermaid
-flowchart LR
-    %% Column 1: Prep
-    subgraph COL1 [1. Preparation]
-        direction TB
-        A[35,000 Compounds] --> B[Lipinski Filter]
-        B --> C[10,940 Drug-like]
-    end
-    
-    %% Column 2: Screening
-    subgraph COL2 [2. Screening]
-        direction TB
-        D[Stage 1: HTVS] --> E[3,279 Hits]
-        E --> F[Stage 2: Precision]
-    end
-    
-    %% Column 3: Selection
-    subgraph COL3 [3. Selection]
-        direction TB
-        G[373 Dockings] --> H[Top 75 Hits]
-        H --> I[9 + 3 for MD]
-    end
-    
-    %% Column 4: Validation
-    subgraph COL4 [4. Validation]
-        direction TB
-        J[ADMET Analysis] --> K[MD 150ns]
-        K --> L[MM/GBSA]
-    end
-
-    %% Link Columns
-    COL1 --> COL2 --> COL3 --> COL4
-```
-
-### Pipeline Summary
-
-| Stage | Input | Process | Output |
-|-------|-------|---------|--------|
-| **Pre-filter** | 35,000 | Lipinski Ro5 | 10,940 |
-| **Stage 1** | 10,940 | HTVS (exh=8) | 3,279 |
-| **Stage 2** | 750 | Precision (exh=64) | 373 |
-| **Selection** | 373 | Top 25/target | 75 → **9 for MD** |
+| Stage | Input | Method | Output |
+|-------|-------|--------|--------|
+| Pre-filter | 35,000+ | Lipinski Rule of Five | 10,940 drug-like |
+| Stage 1 (HTVS) | 10,940 | AutoDock Vina, exhaustiveness 8 | ~750/site advanced |
+| Stage 2 (precision) | ~750/site | AutoDock Vina, exhaustiveness 64, 15 modes | 373 validated hits |
+| Selection | 373 | Top 25/site → ADMET filter | **9 candidates (3/site) + AM251** |
+| Topology | 10 ligands | ACPYPE — GAFF2 + AM1-BCC | GROMACS-ready |
+| Membrane build | — | CHARMM-GUI + OPM, POPC bilayer, CHARMM36m | 12 systems (~62k–225k atoms) |
+| **MD** | 12 systems | **GROMACS, 100 ns production each (~1.2 µs total)** | trajectories |
+| **Free energy** | 12 trajectories | **gmx_MMPBSA (MM-GBSA, 51 frames)** | ΔG_bind ranking |
+| **DFT** | 4 leads | **ORCA, B3LYP/6-31G\*** | HOMO-LUMO, MEP, reactivity |
 
 ---
 
 ## 🧬 Target Sites
 
-Three validated binding sites on GPR55:
-
-| Site | Location | Type | Best Hit | AM251 |
-|------|----------|------|----------|-------|
-| **P0** | Orthosteric (TM bundle) | Competitive | **-12.3** | -9.46 |
-| **P3** | Allosteric (ECL region) | Non-competitive | **-8.5** | -7.70 |
-| **Interface** | GPR55-Gα contact | PPI disruption | **-9.6** | -6.27 |
+| Site | Location | Mechanism | Best Docking ΔG | AM251 |
+|------|----------|-----------|-----------------|-------|
+| **P0** | Orthosteric (TM core) | Competitive antagonism | **−12.3 kcal/mol** | −9.46 |
+| **P3** | Allosteric (ECL region) | Non-competitive modulation | −8.5 kcal/mol | −7.70 |
+| **Interface** | GPR55–Gα12/13 contact | PPI / signal-coupling block | −9.6 kcal/mol | −6.27 |
 
 ---
 
-## 🏆 Top Hits
+## 🏆 Validated Results (MD + MM-PBSA, 100 ns)
 
-### Best Candidates by Target
+Binding free energies (ΔG_bind, kcal/mol) from `gmx_MMPBSA` over 51 frames of each 100 ns trajectory. **Note how dynamics re-rank the static docking hits** — the central scientific takeaway.
 
-| Rank | Compound | Target | Affinity | vs AM251 |
-|------|----------|--------|----------|----------|
-| 1 | compound_11569386 | P0 | **-12.3** | +2.84 better |
-| 2 | compound_124138019 | P0 | -11.4 | +1.94 better |
-| 3 | compound_73952742 | P0 | -11.3 | +1.84 better |
-| 4 | CHEMBL432162 | Interface | **-9.6** | +3.33 better |
-| 5 | compound_92261630 | Interface | -9.1 | +2.83 better |
-| 6 | compound_3992081 | P3 | **-8.5** | +0.80 better |
+**Orthosteric (P0)**
+| Compound | ΔG_bind | ± SD | Note |
+|----------|---------|------|------|
+| AM251 (control) | −35.06 | 4.33 | reference antagonist |
+| **compound_11569386** | **−26.30** | 1.94 | **strongest novel binder (all sites)** |
+| compound_76358219 | −17.19 | 2.52 | strong binder |
 
-### Pan-Site Binders (Novel Finding)
+**Allosteric (P3)**
+| Compound | ΔG_bind | ± SD | Note |
+|----------|---------|------|------|
+| **compound_2961621** | **−7.42** | 2.42 | **top allosteric — beats AM251 (−6.72)** |
+| AM251 (control) | −6.72 | 2.40 | reference |
 
-**3 compounds bind ALL 3 target sites:**
+**Interface (PPI)**
+| Compound | ΔG_bind | ± SD | Note |
+|----------|---------|------|------|
+| AM251 (control) | −13.03 | 2.14 | reference |
+| CHEMBL432162 | −3.79 | 4.94 | moderate binder |
 
-| Compound | P0 | Interface | P3 |
-|----------|----|-----------|----|
-| compound_73952742 | -11.3 | -8.0 | -7.3 |
-| compound_69204715 | -10.8 | -8.5 | -7.7 |
-| compound_16947356 | -10.3 | -8.1 | -7.9 |
-
----
-
-## 📈 Current Progress
-
-| Phase | Description | Status |
-|-------|-------------|--------|
-| Phase 0 | Target Identification | ✅ Complete |
-| Phase 1 | Protocol Validation (AM251) | ✅ Complete |
-| Phase 2 | HTVS Screening | ✅ **Complete** |
-| Phase 3 | Hit Selection & Analysis | ✅ **Complete** |
-| Phase 4 | ADMET Profiling | 🔄 Next |
-| Phase 5 | MD Simulations (150 ns × 12) | ⬜ Pending |
-| Phase 6 | Binding Energy (MM/GBSA) | ⬜ Pending |
+> **Key insight:** several top *docking* hits collapsed under MD (e.g. the best-docking P3 compound became a non-binder by MM-PBSA), while a lower-ranked compound emerged as the true allosteric lead. Static docking scores are hypotheses; dynamics and free-energy calculations are the validation.
 
 ---
 
-## 🛠️ Technologies
+## ⚛️ DFT Analysis
 
-| Category | Tools |
-|----------|-------|
-| **Docking** | AutoDock Vina 1.2.5 |
-| **Cheminformatics** | RDKit, Open Babel |
-| **Visualization** | PyMOL, UCSF Chimera |
-| **MD Simulations** | GROMACS 2021 |
-| **Compute** | Google Cloud VM (8-core) |
+The four MD-validated leads (AM251, compound_11569386, compound_76358219, compound_2961621) underwent **DFT geometry optimisation and frontier-orbital analysis** (ORCA, B3LYP/6-31G\*): HOMO-LUMO gaps, derived global reactivity descriptors (hardness, softness, electrophilicity), and molecular electrostatic potential (MEP) surfaces — benchmarking each novel hit's electronic character against the AM251 control.
 
 ---
 
-## 📁 Repository Structure
+## 📊 Selected Figures
+
+| | |
+|---|---|
+| **System & binding sites** | `figures/Figure_1_GPR55_Complex_Labeled.png`, `Figure_2_Binding_Sites.png` |
+| **MD stability** | `figures/Figure_5_Backbone_RMSD.png`, `Figure_6_Radius_of_Gyration.png`, `Figure_7_SASA.png`, `Figure_8_RMSF.png` |
+| **Interactions** | `figures/Figure_11_Hbonds.png`, `Figure_13_PLIP_Interactions.png`, `Figure_12_Conformational_Snapshots.png` |
+| **Collective motion** | `figures/Figure_13_DCCM.png`, `Figure_14_FEL.png` |
+| **DFT (electronic)** | `figures/Figure_14_HOMO_LUMO.png`, `Figure_15_MEP_Surfaces.png` |
+
+<p align="center">
+  <img src="figures/Figure_2_Binding_Sites.png" width="46%" alt="GPR55 binding sites">
+  <img src="figures/Figure_5_Backbone_RMSD.png" width="46%" alt="Backbone RMSD">
+</p>
+<p align="center">
+  <img src="figures/Figure_13_PLIP_Interactions.png" width="46%" alt="PLIP interactions">
+  <img src="figures/Figure_15_MEP_Surfaces.png" width="46%" alt="MEP surfaces">
+</p>
+
+---
+
+## 🛠️ Stack
+
+`AutoDock Vina` · `RDKit` · `ACPYPE / AmberTools (GAFF2, AM1-BCC)` · `CHARMM-GUI + OPM` · `GROMACS (CHARMM36m, POPC, TIP3P)` · `gmx_MMPBSA` · `ORCA (DFT)` · `MDAnalysis / PLIP` · `PyMOL` · Python · run on local GPU + Kaggle (T4) + Google Cloud.
+
+## 📁 Repository
 
 ```
-├── docs/                    # Project documentation
-├── scripts/                 # Docking and analysis scripts
-│   ├── colab/              # Colab notebook scripts
-│   ├── converters/         # Format conversion utilities
-│   └── vm/                 # VM docking scripts
-├── config/                 # Docking configuration files
-├── results/                # Docking results
-│   ├── htvs_top75/        # Top 75 hit PDBQT files
-│   ├── stage3_results.csv # Complete results table
-│   └── control_validation/ # AM251 control results
-├── figures/                # Visualizations & renders
-└── notebooks/              # Analysis notebooks
+docs/          introduction, methodology, results, references, target coordinates
+config/        docking grid + Vina configs for all 3 sites
+figures/       structures, binding sites, MD & DFT analysis plots
+notebooks/     control validation + pipeline notebooks
+results/       Stage-3 docking outputs, top-75 hits, analysis
+scripts/       docking, conversion, PyMOL rendering utilities
+simulations/   MD setup references
+manuscript/    manuscript drafts (in preparation)
 ```
 
----
+## 📌 Status
 
-## 📖 Key Documentation
-
-- [GPR55 Introduction](docs/GPR55_INTRODUCTION.md) - Target background
-- [Phase 0-1 Complete](docs/PHASE_0_1_COMPLETED.md) - Validation results
-- [Target Coordinates](docs/TARGET_COORDINATES.md) - Binding site definitions
+Project **complete** and **thesis defended**. Manuscript **in preparation**. Companion published work: structure-based InlH inhibitor discovery — [InlH-1H6u-Inhibitor-Discovery](https://github.com/Aayush-ob/InlH-1H6u-Inhibitor-Discovery) (*In Silico Research in Biomedicine*, 2026).
 
 ---
 
-## 📚 References
-
-1. Eberhardt, J., et al. (2021). AutoDock Vina 1.2.0. *J. Chem. Inf. Model.* DOI: 10.1021/acs.jcim.1c00203
-2. Lauckner, J.E., et al. (2008). GPR55 is a cannabinoid receptor. *PNAS* 105(7):2699-704
-3. PDB 9IYA - GPR55-G protein complex structure (2025)
-
----
-
-## 📜 License
-
-This project is licensed under the MIT License - see [LICENSE](LICENSE) for details.
-
----
-
-## 👤 Author
-
-**Ayush** - [GitHub](https://github.com/Aayush-ob)
-
----
-
-*Part of Bioinformatics Major Project | Timeline: Nov 2025 - Jun 2026*
+*Author: Ayush Kumar Dewangan — computational drug discovery. Target structure: RCSB PDB 9IYA.*

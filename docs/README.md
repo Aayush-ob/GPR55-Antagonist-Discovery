@@ -1,42 +1,33 @@
-# GPR55 Major Project - Progress Documentation
+# GPR55 Antagonist Discovery — Documentation
 
-> **Discovery of Novel Allosteric Antagonists for the Atypical Cannabinoid Receptor GPR55**
-> 
-> **Timeline:** Nov 2025 - Jun 2026 (7 Months)
+> Discovery of novel antagonists for the atypical cannabinoid receptor **GPR55** (anticancer target, PDB 9IYA), across three binding sites — completed end-to-end pipeline (thesis defended; manuscript in preparation).
 
----
-
-## 📁 Documentation Structure
+## 📁 Documentation Index
 
 | File | Description |
 |------|-------------|
-| [PHASE_0_1_COMPLETED.md](./PHASE_0_1_COMPLETED.md) | Target identification & protocol validation |
-| [PHASE_2_PREPARATION.md](./PHASE_2_PREPARATION.md) | Library assembly & HTVS setup |
-| [TARGET_COORDINATES.md](./TARGET_COORDINATES.md) | All docking target coordinates |
-| [TIMELINE_TRACKER.md](./TIMELINE_TRACKER.md) | Monthly progress tracker |
+| [INTRODUCTION.md](./INTRODUCTION.md) | Target background, rationale, and three-site strategy |
+| [METHODOLOGY.md](./METHODOLOGY.md) | Full computational pipeline (HTVS → ADMET → MD → MM-PBSA → DFT) |
+| [RESULTS.md](./RESULTS.md) | Docking, ADMET, MM-PBSA binding energies, and DFT outcomes |
+| [TARGET_COORDINATES.md](./TARGET_COORDINATES.md) | Docking grid coordinates for all three sites |
+| [REFERENCES.md](./REFERENCES.md) | Key literature references |
 
----
+## ✅ Status
 
-## 🎯 Project Status Overview
+| Phase | Status |
+|-------|--------|
+| Target identification & protocol validation (AM251 control) | ✅ Complete |
+| Library prep & 3-stage HTVS (10,940 compounds) | ✅ Complete |
+| Hit selection & ADMET profiling | ✅ Complete |
+| Molecular dynamics (100 ns × 12, ~1.2 µs) | ✅ Complete |
+| MM-PBSA binding free energy | ✅ Complete |
+| DFT (HOMO-LUMO / MEP) | ✅ Complete |
+| Manuscript | 📝 In preparation |
 
-| Phase | Status | Completion |
-|-------|--------|------------|
-| Phase 0: Allosteric Target Identification | ✅ COMPLETE | 100% |
-| Phase 1: Protocol Validation | ✅ COMPLETE | 100% |
-| Phase 2: Library Prep & HTVS | 🔄 IN PROGRESS | 60% |
-| Phase 3: Hit Analysis | ⬜ PENDING | 0% |
-| Phase 4: MD Simulations | ⬜ PENDING | 0% |
-| Phase 5: Final Analysis | ⬜ PENDING | 0% |
+## 📊 Key Results
 
----
+- Top novel binder: **compound_11569386** (orthosteric), MM-PBSA ΔG_bind **−26.30 kcal/mol**
+- Top allosteric hit: **compound_2961621**, **−7.42 kcal/mol** — outperforms the AM251 control (−6.72)
+- MD + MM-PBSA **re-ranked** several top docking hits, demonstrating the limits of static scoring
 
-## 📊 Key Metrics Established
-
-- **Hit Threshold:** ΔG < -8.5 kcal/mol
-- **Selectivity Filter:** ΔΔG > 1.5 kcal/mol (vs orthosteric)
-- **Library Size:** 35,002 compounds (PDBQT ready)
-- **Target Sites:** 4 validated sites + 1 new interface site
-
----
-
-*Last Updated: 2026-01-15*
+See [RESULTS_BINDING_ENERGIES.md](./RESULTS_BINDING_ENERGIES.md) for the full ranking and `../figures/` for analysis plots.
