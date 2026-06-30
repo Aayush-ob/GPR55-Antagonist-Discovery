@@ -84,24 +84,23 @@ The four MD-validated leads (AM251, compound_11569386, compound_76358219, compou
 
 ---
 
-## 📊 Selected Figures
+## 📊 Figures
 
-| | |
-|---|---|
-| **System & binding sites** | `figures/Figure_1_GPR55_Complex_Labeled.png`, `Figure_2_Binding_Sites.png` |
-| **MD stability** | `figures/Figure_5_Backbone_RMSD.png`, `Figure_6_Radius_of_Gyration.png`, `Figure_7_SASA.png`, `Figure_8_RMSF.png` |
-| **Interactions** | `figures/Figure_11_Hbonds.png`, `Figure_13_PLIP_Interactions.png`, `Figure_12_Conformational_Snapshots.png` |
-| **Collective motion** | `figures/Figure_13_DCCM.png`, `Figure_14_FEL.png` |
-| **DFT (electronic)** | `figures/Figure_14_HOMO_LUMO.png`, `Figure_15_MEP_Surfaces.png` |
+The full set of analysis figures is in [`figures/`](figures/). Highlights (shown full-width for clarity):
 
-<p align="center">
-  <img src="figures/Figure_2_Binding_Sites.png" width="46%" alt="GPR55 binding sites">
-  <img src="figures/Figure_5_Backbone_RMSD.png" width="46%" alt="Backbone RMSD">
-</p>
-<p align="center">
-  <img src="figures/Figure_13_PLIP_Interactions.png" width="46%" alt="PLIP interactions">
-  <img src="figures/Figure_15_MEP_Surfaces.png" width="46%" alt="MEP surfaces">
-</p>
+**The three target binding sites — orthosteric (P0), allosteric (P3), and the GPR55–Gα12/13 interface**
+
+<p align="center"><img src="figures/Figure_2_Binding_Sites.png" width="92%" alt="GPR55 binding sites"></p>
+
+**Backbone + ligand RMSD over 100 ns (all 12 systems)**
+
+<p align="center"><img src="figures/Figure_5_Backbone_RMSD.png" width="100%" alt="100 ns backbone and ligand RMSD"></p>
+
+**DFT — molecular electrostatic potential (MEP) surfaces of the validated leads**
+
+<p align="center"><img src="figures/Figure_15_MEP_Surfaces.png" width="92%" alt="MEP surfaces of lead compounds"></p>
+
+Also in `figures/`: RMSF, radius of gyration, SASA, hydrogen bonds, contacts, minimum distance, conformational snapshots, DCCM, free-energy landscape (FEL), PLIP interaction maps, and HOMO-LUMO orbitals.
 
 ---
 
